@@ -50,7 +50,10 @@ class JWTEncoder implements TokenEncoderInterface
     {
         $data['exp'] = time() + $this->lifeTime;
 
-        if (is_array($this->secretKey) && $this->algorithm == 'RS256') {
+        if (is_array($this->secretKey) &&
+            array_key_exists('private', $this->secretKey) &&
+            array_key_exists('public', $this->secretKey) &&
+            $this->algorithm == 'RS256') {
             return JWT::encode($data, $this->secretKey['private'], $this->algorithm);
         }
 
